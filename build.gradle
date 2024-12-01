@@ -1,0 +1,35 @@
+plugins {
+    // Add Gradle plugins here
+}
+
+apply plugin: 'java'
+sourceCompatibility = 17
+version = '1.0.0'
+compileJava.options.encoding = 'UTF-8'
+
+dependencies {
+    // Add dependencies here
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    test {
+        java {
+            srcDir 'test'
+        }
+    }
+
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
