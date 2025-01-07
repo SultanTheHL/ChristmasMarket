@@ -1,6 +1,7 @@
 package de.tum.cit.aet.pse.controller;
 import de.tum.cit.aet.pse.entity.Customer;
 import de.tum.cit.aet.pse.service.CustomerService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,11 @@ public class CustomerController {
     }
     @PostMapping("/{customerId}/add-money")
     public String addMoney(@PathVariable Long customerId, @RequestParam double amount) {
+        return customerService.addMoney(customerId, amount);
+    }
+    @PostMapping("/add-money")
+    public String addMoney(HttpSession session, @RequestParam double amount) {
+        Long customerId = (Long) session.getAttribute("userId");
         return customerService.addMoney(customerId, amount);
     }
 }

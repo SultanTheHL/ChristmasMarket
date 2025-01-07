@@ -6,9 +6,11 @@ import de.tum.cit.aet.pse.entity.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CustomerItemRepository extends JpaRepository<CustomerItem, Long> {
     Optional<CustomerItem> findByCustomerAndItem(Customer customer, Item item);
+    List<CustomerItem> findByCustomerId(Long customerId);
 }

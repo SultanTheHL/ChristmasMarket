@@ -4,6 +4,9 @@ import de.tum.cit.aet.pse.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class CustomerItemService {
     @Autowired
@@ -16,6 +19,13 @@ public class CustomerItemService {
     private VendorRepository vendorRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private TradeRepository tradeRepository;
+
+    public List<CustomerItem> getAllCustomerItemsOfACustomer(Long customerId) {
+        return customerItemRepository.findByCustomerId(customerId);
+
+    }
 
     public String purchaseItem(Long customerId, Long vendorItemId, int quantity) {
         VendorItem vendorItem = vendorItemRepository.findById(vendorItemId)
@@ -51,6 +61,7 @@ public class CustomerItemService {
         return "Purchase successful!";
     }
     public String tradeItem(Long sellerId, Long buyerId, Long itemId, int quantity, double price) {
+
         Customer seller = customerRepository.findById(sellerId)
                 .orElseThrow(() -> new RuntimeException("Seller not found"));
 
@@ -78,13 +89,64 @@ public class CustomerItemService {
         }
         CustomerItem buyerItem = customerItemRepository.findByCustomerAndItem(buyer, item)
                 .orElse(new CustomerItem(buyer, customerItem.getItem(), 0));
+        seller.setWallet(seller.getWallet() + price);
+        buyer.setWallet(buyer.getWallet() - price);
         buyerItem.setQuantity(buyerItem.getQuantity() + quantity);
+        customerRepository.save(seller);
+        customerRepository.save(buyer);
         customerItemRepository.save(buyerItem);
 
         return "Trade successful!";
 
 
     }
+    public List<Trade> getAllPendingTrades(Long customerId) {
+        return tradeRepository.findByRecipientIdAndStatus(customerId, "PENDING");
+    }
+    public void deleteTrade(Long id){
+        tradeRepository.deleteById(id);
+    }
+    public String changeStatus(Long id, String status) {
+        Trade trade = tradeRepository.getTradeById(id);
+        trade.setStatus(status);
+        tradeRepository.save(trade);
+        return "Trade successful!";
+    }
+    public List<CustomerItem> getALlCustomerItemsOfAUser(String email) {
+        Long id = customerRepository.findByEmail(email).get().getId();
+        return customerItemRepository.findByCustomerId(id);
+    }
+    public Trade getTradeById(Long tradeId) {
+        return tradeRepository.getTradeById(tradeId);
+    }
+    public String requestTrade(Long traderId, String otherEmail, String itemName, int quantity, double price) {
+            Customer trader = customerRepository.findById(traderId)
+                    .orElseThrow(() -> new RuntimeException("Trader not found"));
+
+            Customer recipient = customerRepository.findByEmail(otherEmail)
+                    .orElseThrow(() -> new RuntimeException("Recipient not found"));
+
+        System.out.println(itemName);
+
+            Item item = itemRepository.findItemByName(itemName);
+
+        System.out.println(item.getId());
+
+
+            Trade trade = new Trade();
+            trade.setTrader(trader);
+            trade.setRecipient(recipient);
+            trade.setItem(item);
+            trade.setQuantity(quantity);
+            trade.setPrice(price);
+            trade.setTimestamp(LocalDateTime.now());
+            trade.setStatus("PENDING");
+
+            tradeRepository.save(trade);
+
+            return "Trade request sent successfully!";
+        }
+
     public String throwOutItem(Long customerId, Long itemId, int quantity) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));

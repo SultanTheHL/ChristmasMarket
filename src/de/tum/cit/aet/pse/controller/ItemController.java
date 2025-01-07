@@ -21,6 +21,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public Optional<Item> getItemById(@PathVariable Long id) {
+        System.out.println("Tried to fetch item by id " + id);
         return itemService.getItemById(id);
     }
 

@@ -2,13 +2,16 @@ package de.tum.cit.aet.pse.service;
 
 import de.tum.cit.aet.pse.entity.Customer;
 import de.tum.cit.aet.pse.entity.PasswordUtil;
+import de.tum.cit.aet.pse.entity.Person;
 import de.tum.cit.aet.pse.entity.Vendor;
 import de.tum.cit.aet.pse.repository.CustomerRepository;
 import de.tum.cit.aet.pse.repository.VendorRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -17,6 +20,8 @@ public class AuthService {
     private CustomerRepository customerRepository;
     @Autowired
     private VendorRepository vendorRepository;
+    @Autowired
+    private CustomerService customerService;
 
     public String register(String name, String email, String password, String userType) {
         String hashedPassword = PasswordUtil.hashPassword(password);
@@ -47,7 +52,7 @@ public class AuthService {
         return "Registration successful";
     }
 
-    public String login(String email, String password, HttpSession session) {
+    public ResponseEntity<Long> login(String email, String password, HttpSession session) {
         Optional<Customer> customerOpt = customerRepository.findByEmail(email);
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
@@ -56,7 +61,8 @@ public class AuthService {
             }
             session.setAttribute("userId", customer.getId());
             session.setAttribute("userType", "customer");
-            return "Login successful as Customer";
+            System.out.println("Login successful as customer");
+            return ResponseEntity.ok(customer.getId());
         }
 
         Optional<Vendor> vendorOpt = vendorRepository.findByEmail(email);
@@ -67,7 +73,8 @@ public class AuthService {
             }
             session.setAttribute("userId", vendor.getId());
             session.setAttribute("userType", "vendor");
-            return "Login successful as Vendor";
+            System.out.println("Login successful as vendor");
+            return ResponseEntity.ok(vendor.getId());
         }
 
         throw new RuntimeException("Invalid email or password");
@@ -75,5 +82,16 @@ public class AuthService {
 
     public void logout(HttpSession session) {
         session.invalidate();
+    }
+    public Person profile(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        if(Objects.equals((String) session.getAttribute("userType"), "customer")) {
+            return customerService.getCustomerById((Long) session.getAttribute("userId")).orElseThrow();
+        }
+        return vendorRepository.getVendorById(((Long) session.getAttribute("userId"))).orElseThrow();
+    }
+    public boolean profileBoolean(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        return Objects.equals((String) session.getAttribute("userType"), "customer");
     }
 }

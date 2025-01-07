@@ -1,12 +1,12 @@
 package de.tum.cit.aet.pse.controller;
 
+import de.tum.cit.aet.pse.entity.Customer;
+import de.tum.cit.aet.pse.entity.Person;
 import de.tum.cit.aet.pse.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -23,9 +23,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password,
-                        HttpSession session) {
+    public ResponseEntity<Long> login(@RequestParam String email,
+                                      @RequestParam String password,
+                                      HttpSession session) {
         return authService.login(email, password, session);
     }
 
@@ -33,5 +33,13 @@ public class AuthController {
     public String logout(HttpSession session) {
         authService.logout(session);
         return "Logout successful";
+    }
+    @GetMapping("/profile")
+    public ResponseEntity<Person> getProfile(HttpSession session) {
+        return ResponseEntity.ok(authService.profile(session));
+    }
+    @GetMapping("/isCustomer")
+    public ResponseEntity<Boolean> getProfileBoolean(HttpSession session) {
+        return ResponseEntity.ok(authService.profileBoolean(session));
     }
 }

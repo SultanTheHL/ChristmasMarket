@@ -1,5 +1,6 @@
 package de.tum.cit.aet.pse.controller;
 
+import de.tum.cit.aet.pse.entity.CustomerItem;
 import de.tum.cit.aet.pse.entity.Vendor;
 import de.tum.cit.aet.pse.entity.VendorItem;
 import de.tum.cit.aet.pse.service.NotificationService;
@@ -117,5 +118,10 @@ public class VendorItemController {
         }
 
         return vendorItemService.updateVendorItem(vendorItem.getId(), vendorItem);
+    }
+    @GetMapping("/me")
+    public List<VendorItem> getAllVendorItemsOfAVendor(HttpSession session) {
+        Long userId = (Long) session.getAttribute("userId");
+        return vendorItemService.getItemsForVendor(userId);
     }
 }

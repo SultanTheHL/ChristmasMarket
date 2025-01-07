@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cart")
 public class ShoppingCartController {
@@ -129,5 +131,14 @@ public class ShoppingCartController {
         cartService.executeCartCommand(command);
 
         return "Cart checked out successfully!";
+    }
+    @GetMapping("/items")
+    public List<CartItem> getCartItems(HttpSession session) {
+        Long customerId = (Long) session.getAttribute("userId");
+        ShoppingCart cart = cartService.getOrCreateCart(customerId);
+        System.out.println("Cart items fetched");
+
+
+        return cart.getItems();
     }
 }

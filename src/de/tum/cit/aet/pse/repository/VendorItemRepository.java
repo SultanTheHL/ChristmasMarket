@@ -1,4 +1,5 @@
 package de.tum.cit.aet.pse.repository;
+import de.tum.cit.aet.pse.entity.CustomerItem;
 import de.tum.cit.aet.pse.entity.Item;
 import de.tum.cit.aet.pse.entity.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;

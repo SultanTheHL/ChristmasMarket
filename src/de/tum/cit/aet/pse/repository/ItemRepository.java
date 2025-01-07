@@ -15,5 +15,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Gluhwein> findAllGluhweinItems();
     @Query("SELECT i FROM Gluhwein i WHERE i.name = :name")
     Gluhwein findGluhweinByName(String name);
+    @Query("SELECT i from Item i WHERE i.name = :name")
+    Item findItemByName(String name);
 
 }

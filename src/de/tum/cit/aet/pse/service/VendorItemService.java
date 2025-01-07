@@ -38,4 +38,5 @@ public class VendorItemService {
     public List<VendorItem> getItemsForVendor(Long vendorId) {
         return vendorItemRepository.findItemsByVendorId(vendorId);
     }
+
 }
