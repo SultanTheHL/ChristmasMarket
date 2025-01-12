@@ -12,7 +12,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 public class Vendor extends Person{
 //    @OneToMany(mappedBy = "vendor")
 //    private List<VendorItem> vendorItems;
