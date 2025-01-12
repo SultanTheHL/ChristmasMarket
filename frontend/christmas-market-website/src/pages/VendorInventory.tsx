@@ -17,7 +17,7 @@ interface VendorItem {
     item_type: string;
     basePrice: number;
   };
-  quantity: number;
+  stock: number;
   customPrice: number;
 }
 
@@ -43,8 +43,8 @@ function InventoryItem({ item, onPriceChange }: {
         <div>
           <h3 className="text-xl font-bold capitalize text-green-800">{item.item.name}</h3>
           <p className="text-sm text-gray-600">Base Price: €{item.item.basePrice}</p>
-          <p className="text-lg font-semibold text-red-700 mt-1">
-            Current Price: €{item.customPrice} | Quantity: {item.quantity}
+          <p className="text-lg font-semibold text-red-700 mt-1 mb-2">
+            Current Price: €{item.customPrice} | Quantity: {item.stock}
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export function VendorInventory() {
 
   const fetchInventory = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/vendor-items/me', {
+      const response = await axios.get<VendorItem[]>('https://christmasmarket.onrender.com/vendor-items/me', {
         withCredentials: true
       });
       setInventory(response.data);
@@ -90,7 +90,7 @@ export function VendorInventory() {
 
   const handlePriceChange = async (vendorItemId: number, newPrice: number) => {
     try {
-      await axios.post(`http://localhost:8080/vendor-items/${vendorItemId}/set-price`, null, {
+      await axios.post(`https://christmasmarket.onrender.com/vendor-items/${vendorItemId}/set-price`, null, {
         params: { price: newPrice },
         withCredentials: true
       });

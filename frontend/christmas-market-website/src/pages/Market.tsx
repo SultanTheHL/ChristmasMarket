@@ -68,7 +68,7 @@ export function Market() {
 
   const fetchVendors = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/vendors', {
+      const response = await axios.get<Vendor[]>('https://christmasmarket.onrender.com/vendors', {
         withCredentials: true
       });
       setVendors(response.data);
@@ -83,7 +83,7 @@ export function Market() {
 
   const fetchVendorItems = async (vendorId: number) => {
     try {
-      const response = await axios.get(`http://localhost:8080/vendor-items/vendor/${vendorId}`, {
+      const response = await axios.get<VendorItem[]>(`https://christmasmarket.onrender.com/vendor-items/vendor/${vendorId}`, {
         withCredentials: true
       });
       setVendorItems(prev => ({
@@ -96,13 +96,13 @@ export function Market() {
   };
 
   const triggerRandomEvent = async () => {
-    if (Math.random() < 0.9) {
+    if (Math.random() < 0.1) {
       const events = Object.keys(SANTA_EVENTS);
       const randomEvent = events[Math.floor(Math.random() * events.length)];
       const randomAmount = Math.floor(Math.random() * 10) + 1; 
 
       try {
-        const response = await axios.post('http://localhost:8080/santa/trigger-event', null, {
+        await axios.post('https://christmasmarket.onrender.com/santa/trigger-event', null, {
           params: {
             eventName: randomEvent,
             amount: randomAmount
@@ -122,7 +122,7 @@ export function Market() {
   const handleAddToCart = async (vendorItemId: number) => {
     try {
       const quantity = cartQuantities[vendorItemId] || 1;
-      await axios.post(`http://localhost:8080/cart/add/${vendorItemId}`, null, {
+      await axios.post(`https://christmasmarket.onrender.com/cart/add/${vendorItemId}`, null, {
         params: { quantity },
         withCredentials: true
       });

@@ -70,7 +70,7 @@ export function Stats() {
   useEffect(() => {
     const fetchVendorItems = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/vendor-items/me', {
+        const response = await axios.get<VendorItem[]>('https://christmasmarket.onrender.com/vendor-items/me', {
           withCredentials: true
         });
         setVendorItems(response.data);
@@ -83,7 +83,6 @@ export function Stats() {
     fetchVendorItems();
   }, []);
 
-  // Mock profit calculation (20% profit margin)
   const calculateMockProfit = (item: VendorItem) => {
     const revenue = item.soldCount * item.customPrice;
     const cost = item.soldCount * item.item.basePrice;

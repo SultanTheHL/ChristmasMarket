@@ -79,10 +79,10 @@ export function Inventory() {
 
   const fetchInventory = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/customer-item/me', {
+      const response = await axios.get<CustomerItem[]>('https://christmasmarket.onrender.com/customer-item/me', {
         withCredentials: true
       });
-      setInventory(response.data);
+      setInventory(response.data as CustomerItem[]);
     } catch (err) {
       console.error('Failed to fetch inventory:', err);
     }
@@ -90,7 +90,7 @@ export function Inventory() {
 
   const handleThrowOut = async (itemId: number, quantity: number) => {
     try {
-      await axios.delete(`http://localhost:8080/customer-item/throw/${itemId}`, {
+      await axios.delete(`https://christmasmarket.onrender.com/customer-item/throw/${itemId}`, {
         params: { quantity },
         withCredentials: true
       });

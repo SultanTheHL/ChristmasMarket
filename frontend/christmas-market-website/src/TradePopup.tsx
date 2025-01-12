@@ -98,9 +98,4 @@ export function TradePopup({ isOpen, onClose, onAccept }: TradePopupProps) {
   )
 }
 
-<style jsx global>{`
-  .DialogOverlay {
-    background-color: transparent important;
-  }
-`}</style>
 

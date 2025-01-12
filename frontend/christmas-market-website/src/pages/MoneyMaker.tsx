@@ -35,7 +35,7 @@ export function MoneyMaker() {
 
   const handleMakeMoney = async () => {
     try {
-      await axios.post('http://localhost:8080/customers/add-money', null, {
+      await axios.post('https://christmasmarket.onrender.com/customers/add-money', null, {
         params: { amount: 10 },
         withCredentials: true
       });

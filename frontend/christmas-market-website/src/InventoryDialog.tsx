@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
@@ -38,7 +37,7 @@ export function InventoryDialog({ customerEmail }: { customerEmail: string }) {
 
   const fetchInventory = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/customer-item', {
+      const response = await axios.get<CustomerItem[]>('https://christmasmarket.onrender.com/customer-item', {
         params: { email: customerEmail },
         withCredentials: true
       });

@@ -19,14 +19,14 @@ const Login: React.FC = () => {
             params.append('email', email);
             params.append('password', password);
             
-            await axios.post('http://localhost:8080/auth/login', params, {
+            await axios.post('https://christmasmarket.onrender.com/auth/login', params, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 withCredentials: true,
             });
             
-            const profileResponse = await axios.get('http://localhost:8080/auth/isCustomer', {
+            const profileResponse = await axios.get('https://christmasmarket.onrender.com/auth/isCustomer', {
                 withCredentials: true,
             });
             

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart, Plus, Minus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import axios from 'axios';
@@ -22,10 +22,10 @@ export function CartPopup() {
 
   const fetchCart = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/cart/items', {
+      const response = await axios.get<CartItem[]>('https://christmasmarket.onrender.com/cart/items', {
         withCredentials: true
       });
-      setCartItems(response.data|| []);
+      setCartItems(response.data || []);
     } catch (err) {
       window.alert('Failed to fetch cart:');
     }
@@ -34,16 +34,16 @@ export function CartPopup() {
   const updateQuantity = async (itemId: number, quantity: number, increment: boolean) => {
     try {
       if (quantity === 0) {
-        await axios.post(`http://localhost:8080/cart/remove/${itemId}`, null, {
+        await axios.post(`https://christmasmarket.onrender.com/cart/remove/${itemId}`, null, {
           withCredentials: true
         });
       } else if(increment) {
-        await axios.post(`http://localhost:8080/cart/add/${itemId}`, null, {
+        await axios.post(`https://christmasmarket.onrender.com/cart/add/${itemId}`, null, {
           params: { quantity: 1 },
           withCredentials: true
         });
       } else {
-        await axios.post(`http://localhost:8080/cart/add/${itemId}`, null, {
+        await axios.post(`https://christmasmarket.onrender.com/cart/add/${itemId}`, null, {
           params: { quantity: -1 },
           withCredentials: true
         });
@@ -56,7 +56,7 @@ export function CartPopup() {
 
   const handleCheckout = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/cart/checkout', null, {
+      const response = await axios.post('https://christmasmarket.onrender.com/cart/checkout', null, {
         withCredentials: true
       });
       alert(response.data);

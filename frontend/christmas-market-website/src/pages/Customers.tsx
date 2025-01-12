@@ -25,7 +25,7 @@ const CustomerCard = ({ customer }: { customer: Customer }) => {
       params.append('quantity', quantity.toString());
       params.append('price', money.toString());
       
-      const response = await axios.post('http://localhost:8080/customer-item/request-trade', params, {
+      const response = await axios.post('https://christmasmarket.onrender.com/customer-item/request-trade', params, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -87,7 +87,7 @@ export function Customers() {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/auth/profile', {
+        const response = await axios.get<{ email: string }>('https://christmasmarket.onrender.com/auth/profile', {
           withCredentials: true
         });
         setCurrentUserEmail(response.data.email);
@@ -102,7 +102,7 @@ export function Customers() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/customers', {
+        const response = await axios.get<Customer[]>('https://christmasmarket.onrender.com/customers', {
           withCredentials: true
         });
         const filteredCustomers = response.data.filter(

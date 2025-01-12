@@ -12,7 +12,7 @@ export function BuyFromStorage() {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/items', {
+      const response = await axios.get<Item[]>('https://christmasmarket.onrender.com/items', {
         withCredentials: true
       });
       setItems(response.data);
@@ -24,7 +24,7 @@ export function BuyFromStorage() {
   const handleBuy = async (itemId: number) => {
     try {
       const quantity = quantities[itemId] || 1;
-      await axios.post(`http://localhost:8080/vendor-items/buy`, null, {
+      await axios.post(`https://christmasmarket.onrender.com/vendor-items/buy`, null, {
         params: { itemId, quantity },
         withCredentials: true
       });

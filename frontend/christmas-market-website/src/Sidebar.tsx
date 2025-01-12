@@ -43,9 +43,10 @@ const Sidebar: React.FC = () => {
 
   const handleFetchUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/auth/profile`, {
-        withCredentials: true,
-      });
+      const response = await axios.get<{ id: number; name: string; email: string; wallet: number }>(
+        `https://christmasmarket.onrender.com/auth/profile`,
+        { withCredentials: true }
+      );
       setUser(response.data);
     } catch (err: any) {
       setError(err.response?.data || "Failed to fetch profile.");
@@ -55,7 +56,7 @@ const Sidebar: React.FC = () => {
   const fetchTradeRequests = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get('http://localhost:8080/customer-item/get-trades', {
+      const response = await axios.get<TradeRequest[]>('https://christmasmarket.onrender.com/customer-item/get-trades', {
         withCredentials: true,
       });
       setTradeRequests(response.data);
@@ -69,7 +70,7 @@ const Sidebar: React.FC = () => {
   const fetchTradeDetails = async (request: TradeRequest) => {
     console.log(request.item);
     try {
-      const itemResponse = await axios.get(`http://localhost:8080/items/${request.item.id}`, {
+      const itemResponse = await axios.get<{ name: string }>(`https://christmasmarket.onrender.com/items/${request.item.id}`, {
         withCredentials: true,
       });
       console.log(itemResponse.data);
@@ -121,7 +122,7 @@ const Sidebar: React.FC = () => {
 
       if (accepted) {
         const response = await axios.post(
-          `http://localhost:8080/customer-item/trade/${request.trader.id}/${request.item.id}`,
+          `https://christmasmarket.onrender.com/customer-item/trade/${request.trader.id}/${request.item.id}`,
           null,
           {
             params: {
@@ -136,7 +137,7 @@ const Sidebar: React.FC = () => {
       
       
       const response = await axios.post(
-        `http://localhost:8080/customer-item/close-trade/${request.id}`,
+        `https://christmasmarket.onrender.com/customer-item/close-trade/${request.id}`,
         params,
         {
           headers: {
@@ -154,8 +155,8 @@ const Sidebar: React.FC = () => {
       setSelectedRequest(null);
     } catch (err) {
       window.alert('You do not own the specified item: ' + request.item.name);
-      const response = await axios.post(
-        `http://localhost:8080/customer-item/close-trade/${request.id}`,
+      await axios.post(
+        `https://christmasmarket.onrender.com/customer-item/close-trade/${request.id}`,
         params,
         {
           headers: {

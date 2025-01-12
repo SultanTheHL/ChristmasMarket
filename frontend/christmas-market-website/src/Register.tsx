@@ -24,7 +24,7 @@ const Register: React.FC = () => {
             params.append('password', password);
             params.append('userType', userType);
 
-            const response = await axios.post('http://localhost:8080/auth/register', params, {
+            const response = await axios.post('https://christmasmarket.onrender.com/auth/register', params, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 }

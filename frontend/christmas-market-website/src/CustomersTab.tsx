@@ -18,19 +18,17 @@ const ITEMS_PER_PAGE = 12;
 const CustomersTab: React.FC = () => {
     const [customers, setCustomers] = useState<Customer[]>([])
     const [currentPage, setCurrentPage] = useState(1)
-    const [error, setError] = useState("")
     const [isTradePopupOpen, setIsTradePopupOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
     
     const handleFetchCustomers = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/customers`, {
-                withCredentials: true,
-            })
-            setCustomers(response.data)
+            const response = await axios.get<Customer[]>('https://christmasmarket.onrender.com/customers', {
+                withCredentials: true
+            });
+            setCustomers(response.data);
         } catch (err) {
-            setError("Failed to fetch customers")
             console.error(err)
         }
     }
@@ -82,7 +80,7 @@ const CustomersTab: React.FC = () => {
             params.append('item', ITEM_NAMES[item]);
             params.append('quantity', quantity.toString());
             params.append('price', money.toString());
-            const response = await axios.post('http://localhost:8080/customer-item/request-trade', params, {
+            const response = await axios.post('https://christmasmarket.onrender.com/customer-item/request-trade', params, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
