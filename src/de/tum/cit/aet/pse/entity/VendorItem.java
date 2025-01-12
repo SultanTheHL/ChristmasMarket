@@ -60,6 +60,6 @@ public class VendorItem {
 
     @Override
     public String toString() {
-        return "This is a " + item.toString() + " belonging to " + vendor.toString();
+        return "This is a " + item.toString() + " belonging to " + vendor.toString() +".";
     }
 }
