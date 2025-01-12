@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { Item } from "@/lib/constants"
+import { Item } from '@/lib/types';
 
 
 interface ResponseTradePopupProps {
@@ -50,9 +50,4 @@ export function ResponseTradePopup({ isOpen, onClose, onAccept, onDecline, item,
   )
 }
 
-<style jsx global>{`
-  .DialogOverlay {
-    background-color: transparent important;
-  }
-`}</style>
 

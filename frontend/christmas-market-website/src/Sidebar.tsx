@@ -21,6 +21,9 @@ interface TradeRequest {
   item: {
     id: number;
     name: string;
+    basePrice: number;
+  storable: boolean;
+  item_type: 'GLUHWEIN' | 'APPLE_PIE' | 'SANTA_TOY';
   };
   quantity: number;
   price: number;
@@ -93,7 +96,7 @@ const Sidebar: React.FC = () => {
     handleFetchUser();
     
     const handleWalletUpdate = () => {
-      handleFetchUser(); // Refresh user data when wallet is updated
+      handleFetchUser(); 
     };
 
     window.addEventListener('wallet-update', handleWalletUpdate);

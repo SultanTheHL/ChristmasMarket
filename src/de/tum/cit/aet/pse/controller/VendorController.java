@@ -2,6 +2,7 @@ package de.tum.cit.aet.pse.controller;
 import de.tum.cit.aet.pse.entity.Loan;
 import de.tum.cit.aet.pse.entity.Vendor;
 import de.tum.cit.aet.pse.service.VendorService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,11 @@ public class VendorController {
     @GetMapping("/{id}")
     public Optional<Vendor> getVendorById(@PathVariable Long id) {
         return vendorService.getVendorById(id);
+    }
+    @GetMapping("/getBySession")
+    public Optional<Vendor> getVendorById(HttpSession session) {
+        Long vendorId = (Long) session.getAttribute("userId");
+        return vendorService.getVendorById(vendorId);
     }
 
     @PostMapping

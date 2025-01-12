@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Wine, PieChart, Gift, ChevronLeft, ChevronRight } from 'lucide-react';
 import Sidebar from '../Sidebar';
+import { ChristmasEventPopup } from '@/components/ChristmasEventPopup';
+import gluhweinGift from '../assets/gluhweingift.webp';
+import moneyGift from '../assets/moneygift.webp';
+import everythingDiscount from '../assets/everythingdiscount.webp';
 
 interface Vendor {
   id: number;
@@ -28,12 +32,35 @@ const itemIcons = {
   'Santa Action Figure': Gift,
 } as const;
 
+const SANTA_EVENTS = {
+  'Gift Everyone Gluhwein': {
+    title: "Santa's Glühwein Gift!",
+    description: "Ho Ho Ho! Santa has decided to spread holiday cheer by gifting everyone some warm Glühwein!",
+    imageUrl: gluhweinGift
+  },
+  'Bonus Money': {
+    title: "Christmas Bonus!",
+    description: "Santa's feeling generous! Everyone gets some bonus Christmas money!",
+    imageUrl: moneyGift
+  },
+  'Discount Event': {
+    title: "Market-Wide Discount!",
+    description: "Santa has worked his magic! All items in the market are now discounted!",
+    imageUrl: everythingDiscount
+  }
+} as const;
+
 export function Market() {
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [vendorItems, setVendorItems] = useState<Record<number, VendorItem[]>>({});
   const [cartQuantities, setCartQuantities] = useState<Record<number, number>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const vendorsPerPage = 4;
+  const [eventPopup, setEventPopup] = useState<{
+    title: string;
+    description: string;
+    imageUrl: string;
+  } | null>(null);
 
   useEffect(() => {
     fetchVendors();
@@ -68,6 +95,30 @@ export function Market() {
     }
   };
 
+  const triggerRandomEvent = async () => {
+    if (Math.random() < 0.9) {
+      const events = Object.keys(SANTA_EVENTS);
+      const randomEvent = events[Math.floor(Math.random() * events.length)];
+      const randomAmount = Math.floor(Math.random() * 10) + 1; 
+
+      try {
+        const response = await axios.post('http://localhost:8080/santa/trigger-event', null, {
+          params: {
+            eventName: randomEvent,
+            amount: randomAmount
+          },
+          withCredentials: true
+        });
+        
+        setEventPopup(SANTA_EVENTS[randomEvent as keyof typeof SANTA_EVENTS]);
+        
+        fetchVendors();
+      } catch (err) {
+        console.error('Failed to trigger Santa event:', err);
+      }
+    }
+  };
+
   const handleAddToCart = async (vendorItemId: number) => {
     try {
       const quantity = cartQuantities[vendorItemId] || 1;
@@ -83,7 +134,8 @@ export function Market() {
   };
 
   useEffect(() => {
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
+      await triggerRandomEvent();
       vendors.forEach(vendor => fetchVendorItems(vendor.id));
     };
 
@@ -181,6 +233,16 @@ export function Market() {
           </div>
         )}
       </main>
+      
+      {eventPopup && (
+        <ChristmasEventPopup
+          title={eventPopup.title}
+          description={eventPopup.description}
+          imageUrl={eventPopup.imageUrl}
+          isOpen={!!eventPopup}
+          onClose={() => setEventPopup(null)}
+        />
+      )}
     </div>
   );
 }

@@ -71,15 +71,16 @@ public class EventService {
     private void addMoneyToAll(double amount) {
         List<Customer> customers = customerRepository.findAll();
         customers.forEach(customer -> {
-            customer.addToWallet(amount);
+            customer.addToWallet(amount*10);
             customerRepository.save(customer);
             notificationService.notifyObservers("Santa gifted $" + amount + " to all customers!");
         });
     }
     private void discountAll(double amount) {
+
         List<VendorItem> vendorItems = vendorItemRepository.findAll();
         vendorItems.forEach(vendorItem -> {
-            vendorItem.setCustomPrice(vendorItem.getCustomPrice() * amount);
+            vendorItem.setCustomPrice(vendorItem.getCustomPrice() * (amount/10));
             vendorItemRepository.save(vendorItem);
         });
 
