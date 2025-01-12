@@ -13,7 +13,7 @@ RUN chmod +x gradlew
 
 RUN ./gradlew clean build --no-daemon
 
-RUN ls build/libs/*.jar && cp build/libs/*.jar app.jar || (echo "JAR not found!" && exit 1)
+RUN cp build/libs/*-SNAPSHOT.jar app.jar || cp build/libs/*-1.0.0.jar app.jar
 
 EXPOSE 8080
 
