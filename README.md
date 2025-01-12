@@ -36,4 +36,40 @@ This project is a full-stack system for managing customers, vendors, items, shop
 
 ## How to Run
 
-- Just visit: https://christmas-market-frontend-5gw9.vercel.app/register
+- Visit: https://christmas-market-frontend-5gw9.vercel.app/register
+
+## How to Run Locally:
+
+### Run with Docker
+1. Create a `.env` file with database credentials:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=your_database_name
+   DB_USER=your_database_user
+   DB_PASSWORD=your_database_password
+2. Build and run the Docker container:
+   ```
+   docker build -t christmas-market-backend .
+   docker run --env-file .env -p 8080:8080 christmas-market-backend
+### Run Locally Without Docker
+1. Ensure PostgreSQL is running and configured as per application.properties.
+2. Build and run:
+   ```
+   ./gradlew clean build
+    java -jar build/libs/app.jar
+
+### Run Frontend Locally
+1. Navigate to the frontend directory:
+   ```
+   cd frontend/christmas-market-website
+2. Install dependencies:
+   ```
+   npm install
+3. Start the development server:
+   ```
+   npm run dev
+
+## Notes
+- Backend APIs are accessible at http://localhost:8080.
+- Frontend runs at http://localhost:5173.
