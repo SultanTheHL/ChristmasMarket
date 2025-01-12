@@ -33,3 +33,7 @@ This project is a full-stack system for managing customers, vendors, items, shop
 - Session-based authentication using Jakarta Servlet.
 
 ---
+
+## How to Run
+
+- Just visit: https://christmas-market-frontend-5gw9.vercel.app/register
