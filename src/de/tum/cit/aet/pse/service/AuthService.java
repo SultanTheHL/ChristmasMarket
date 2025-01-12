@@ -85,10 +85,19 @@ public class AuthService {
     }
     public Person profile(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
-        if(Objects.equals((String) session.getAttribute("userType"), "customer")) {
-            return customerService.getCustomerById((Long) session.getAttribute("userId")).orElseThrow();
+        if (userId == null) {
+            throw new RuntimeException("User is not logged in or session expired.");
         }
-        return vendorRepository.getVendorById(((Long) session.getAttribute("userId"))).orElseThrow();
+
+        String userType = (String) session.getAttribute("userType");
+        if ("customer".equals(userType)) {
+            return customerService.getCustomerById(userId)
+                    .orElseThrow(() -> new RuntimeException("Customer not found."));
+        } else if ("vendor".equals(userType)) {
+            return vendorRepository.getVendorById(userId)
+                    .orElseThrow(() -> new RuntimeException("Vendor not found."));
+        }
+        throw new RuntimeException("Invalid user type.");
     }
     public boolean profileBoolean(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");

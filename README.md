@@ -1,33 +1,35 @@
-# Christmas Bonus Project App of <YOUR NAME> for PSE WS24/25
+# Christmas Market: Full-Stack System
 
-To get the bonus points, you need to create your own system according to the problem statement in Artemis.
+This project is a full-stack system for managing customers, vendors, items, shopping carts, notifications, and events. It provides a React-based frontend with TypeScript and Tailwind CSS, and a backend powered by Java, Spring Boot, and Hibernate. The system is hosted on **Vercel** (frontend) and **Render** (backend).
 
-There are some functional requirements (FR) regarding the functions of your app, but is left open on purpose so you can get creative.
-However, we provide you with Non-Functional Requirements (NFR) that you need to fulfill. Additionally, you need to complete this README with the provided structure.
-
-## Submission procedure
-
-You get a **personal repository** on Artemis to work on your app. It is **necessary**, that the code compiles / runs on Artemis.
-Nonetheless, you should explain how to start the system locally.
-
-### Deadline: **13.01.2025 23:59**
-
-Until the deadline your final system **needs to fulfill** all the requested FRs and NFRs!
-
-## System description (max. 200 words)
-
-TODO: Describe your system, what you implemented and what your vision is.
+---
 
 ## Features
 
-TODO: List the main features that your system has.
+- **User Authentication**: Register, login, and logout for customers and vendors.
+- **Customer Management**: Manage customer profiles and balance.
+- **Vendor Management**: Manage vendor profiles and inventory.
+- **Item Management**: CRUD operations for items and vendor items.
+- **Shopping Cart**: Add, remove, and checkout items in a cart using the **Command** pattern.
+- **Notification System**: Subscribe/unsubscribe and receive notifications about item availability and discounts using the **Observer** pattern.
+- **Event System**: Trigger special events like discounts, gifts, and bonuses.
 
-## UML
+---
 
-TODO: Include a UML diagram of your choice (class diagram, component diagram, etc.) which helps to get an overview of the system you created.
+## Tech Stack
 
-## Usage instructions
+### Frontend
+- **React** with **TypeScript** for building a responsive and interactive user interface.
+- **Tailwind CSS** for styling.
+- Hosted on **Vercel**.
 
-TODO: Provide instructions on how to run your system. Include requirements that need to be installed before.
+### Backend
+- **Spring Boot** with **Hibernate** for RESTful API development.
+- Hosted on **Render**.
 
+### Tools & Technologies
+- REST API
+- Maven for dependency management.
+- Session-based authentication using Jakarta Servlet.
 
+---
